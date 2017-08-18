@@ -52,10 +52,9 @@ class CalcApp(ttk.Frame):
         # レイアウトの作成
         for y, row in enumerate(LAYOUT, 1):
             for x, char in enumerate(row):
-                button = ttk.Button(
-                    self, text=char, command=lambda char=char: self.calc(char)
-                )
+                button = ttk.Button(self, text=char)
                 button.grid(column=x, row=y, sticky=(N, S, E, W))
+                button.bind('<Button-1>', self.calc)
 
         # 横の引き伸ばし設定。全て等分に引き伸ばす
         self.grid(column=0, row=0, sticky=(N, S, E, W))
@@ -74,8 +73,11 @@ class CalcApp(ttk.Frame):
         self.master.columnconfigure(0, weight=1)
         self.master.rowconfigure(0, weight=1)
 
-    def calc(self, char):
+    def calc(self, event):
         """全てのボタンは、押すとここが呼ばれる."""
+        # 押されたボタンのテキストを取得
+        char = event.widget['text']
+
         # 最後に押したボタンの内容
         last = self.exp_list[-1]
 
